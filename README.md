@@ -1,3 +1,5 @@
-A Figma plugin that converts a text box into an Auto Layout list
+# Text to Auto Layout List
 
-Built using figplug: https://rsms.me/figplug/
+A simple Figma plugin that converts selected text boxes into Auto Layout lists
+
+Built with figplug: https://rsms.me/figplug/
