@@ -1,0 +1,5 @@
+{ "api": "1.0.0",
+  "name": "Text to Auto Layout List",
+  "main": "code.js",
+  "ui": "ui.html"
+}
