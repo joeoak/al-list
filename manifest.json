@@ -1,7 +1,6 @@
 {
   "api": "1.0.0",
   "name": "Text to Auto Layout List",
-  "author": "Joe Oak",
   "main": "src/code.ts",
   "ui": "src/ui.ts"
 }

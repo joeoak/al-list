@@ -1,50 +1,82 @@
 <head>
   <meta charset="utf-8"><style>
-@import url("https://rsms.me/inter/inter.css");
+/* @import url("https://rsms.inter.cssme/inter/"); */
 
 /* reset */
+
 * { font-family: inherit; line-height: inherit; font-synthesis: none; }
+
 a, abbr, acronym, address, applet, article, aside, audio, b, big, blockquote,
 body, canvas, caption, center, cite, code, dd, del, details, dfn, div, dl, dt,
 em, embed, fieldset, figcaption, figure, footer, form, grid, h1, h2, h3, h4, h5,
 h6, header, hgroup, hr, html, i, iframe, img, ins, kbd, label, legend, li, main,
 mark, menu, nav, noscript, object, ol, output, p, pre, q, s, samp, section,
 small, span, strike, strong, sub, summary, sup, table, tbody, td, tfoot, th,
-thead, time, tr, tt, u, ul, var, video {
+thead, time, tr, tt, u, ul, var, video
+{
   margin: 0;
   padding: 0;
   border: 0;
   vertical-align: baseline;
 }
+
 blockquote, q { quotes: none; }
-blockquote:before, blockquote:after, q:before, q:after {
+
+blockquote:before, blockquote:after, q:before, q:after
+{
   content: "";
   content: none;
 }
-table {
+
+table
+{
   border-collapse: collapse;
   border-spacing: 0;
 }
-a, a:active, a:visited { color: inherit; }
-/* end of reset */
 
-body {
+a, a:active, a:visited { color: inherit; }
+
+/* reset ends */
+
+* { box-sizing: border-box; }
+
+body
+{
   background: white;
   color: #222;
   font: 12px/16px 'Inter', system-ui, -system-ui, sans-serif;
   font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1;
 }
-@supports (font-variation-settings: normal) {
+
+@supports (font-variation-settings: normal)
+{
   body { font-family: 'Inter var', system-ui, sans-serif; }
+}
+
+.wrapper
+{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 16px;
+}
+
+#list-style-select
+{
+  margin-bottom: 16px;
 }
 
 </style>
 </head>
 <body>
-  <h2>Rectangle Creator</h2>
-  <p>Count: <input id="count" value="5"></p>
-  <button id="create">Create</button>
-  <button id="cancel">Cancel</button>
+  <div class="wrapper">
+    <label for="list-style-select">Choose a list style</label>
+    <select name="list-style" id="list-style-select">
+      <option value="bullet">Bulleted</option>
+      <option value="hyphen">Hyphenated</option>
+    </select>
+    <button id="convert">Convert</button>
+  </div>
 <script>
 /* src/build/.figplug-cache/ui.js 0 */
 (function(exports){
@@ -55,17 +87,20 @@ var VERSION = "0", DEBUG = false;
 var global=void 0!==global?global:"undefined"!=typeof window?window:this;function _stackTrace(cons){const x={stack:""};if(Error.captureStackTrace){Error.captureStackTrace(x,cons);const p=x.stack.indexOf("\n");if(-1!=p)return x.stack.substr(p+1)}return x.stack}function _parseStackFrame(sf){let m=/^\s*at\s+([^\s]+)\s+\((?:.+\/(src\/[^\:]+)|([^\:]+))\:(\d+)\:(\d+)\)$/.exec(sf);return m?{func:m[1],file:m[2]||m[3],line:parseInt(m[4]),col:parseInt(m[5])}:null}function panic(msg){if(console.error.apply(console,["panic:",msg].concat(Array.prototype.slice.call(arguments,1))),"undefined"==typeof process){let e=new Error(msg);throw e.name="Panic",e}console.error(_stackTrace(panic)),process.exit(2)}function print(){console.log.apply(console,Array.prototype.slice.call(arguments))}const dlog=()=>{};function assert(){}function repr(obj){try{return JSON.stringify(obj,null,2)}catch(_){return String(obj)}}
 
 
-document.getElementById('create').onclick = () => {
-    const textbox = document.getElementById('count');
-    const count = parseInt(textbox.value, 10);
-    parent.postMessage({ pluginMessage: { type: 'create-rectangles', count } }, '*');
-};
-document.getElementById('cancel').onclick = () => {
-    parent.postMessage({ pluginMessage: { type: 'cancel' } }, '*');
-};
+function id(obj) {
+    if (obj === undefined || obj === null) {
+        throw new Error("null value");
+    }
+    return obj;
+}
+id(document.getElementById('convert')).addEventListener('click', () => {
+    const select = id(document.getElementById('list-style-select'));
+    const listStyle = select.value;
+    parent.postMessage({ pluginMessage: { type: 'draw-list', listStyle } }, '*');
+});
 })(typeof exports != "undefined" ? exports : (typeof global != "undefined" ? global : typeof self != "undefined" ? self : this)["src/ui"] = {});
 
 
-//#sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoidWkuanMubWFwIiwic291cmNlcyI6WyJ1aS50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7QUFDQSxRQUFRLENBQUMsY0FBYyxDQUFDLFFBQVEsQ0FBRSxDQUFDLE9BQU8sR0FBRztJQUMzQyxNQUFNLE9BQU8sR0FBRyxRQUFRLENBQUMsY0FBYyxDQUFDLE9BQU8sQ0FBc0IsQ0FBQTtJQUNyRSxNQUFNLEtBQUssR0FBRyxRQUFRLENBQUMsT0FBTyxDQUFDLEtBQUssRUFBRSxFQUFFLENBQUMsQ0FBQTtJQUN6QyxNQUFNLENBQUMsV0FBVyxDQUFDLEVBQUUsYUFBYSxFQUFFLEVBQUUsSUFBSSxFQUFFLG1CQUFtQixFQUFFLEtBQUssRUFBRSxFQUFFLEVBQUUsR0FBRyxDQUFDLENBQUE7QUFDbEYsQ0FBQyxDQUFBO0FBRUQsUUFBUSxDQUFDLGNBQWMsQ0FBQyxRQUFRLENBQUUsQ0FBQyxPQUFPLEdBQUc7SUFDM0MsTUFBTSxDQUFDLFdBQVcsQ0FBQyxFQUFFLGFBQWEsRUFBRSxFQUFFLElBQUksRUFBRSxRQUFRLEVBQUUsRUFBRSxFQUFFLEdBQUcsQ0FBQyxDQUFBO0FBQ2hFLENBQUM7Ozs7Iiwic291cmNlUm9vdCI6Ii4uLy4uIn0=
+//#sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoidWkuanMubWFwIiwic291cmNlcyI6WyJ1aS50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7QUFBQSxTQUFTLEVBQUUsQ0FBSSxHQUFNO0lBRW5CLElBQUksR0FBRyxLQUFLLFNBQVMsSUFBSSxHQUFHLEtBQUssSUFBSSxFQUNyQztRQUNFLE1BQU0sSUFBSSxLQUFLLENBQUMsWUFBWSxDQUFDLENBQUE7S0FDOUI7SUFDRCxPQUFPLEdBQXdDLENBQUE7QUFDakQsQ0FBQztBQUVELEVBQUUsQ0FBQyxRQUFRLENBQUMsY0FBYyxDQUFDLFNBQVMsQ0FBQyxDQUFDLENBQUMsZ0JBQWdCLENBQUMsT0FBTyxFQUFFO0lBRS9ELE1BQU0sTUFBTSxHQUFHLEVBQUUsQ0FBQyxRQUFRLENBQUMsY0FBYyxDQUFDLG1CQUFtQixDQUFxQixDQUFDLENBQUM7SUFDcEYsTUFBTSxTQUFTLEdBQUcsTUFBTSxDQUFDLEtBQUssQ0FBQztJQUMvQixNQUFNLENBQUMsV0FBVyxDQUFDLEVBQUUsYUFBYSxFQUFFLEVBQUUsSUFBSSxFQUFFLFdBQVcsRUFBRSxTQUFTLEVBQUUsRUFBRSxFQUFFLEdBQUcsQ0FBQyxDQUFDO0FBQy9FLENBQUMsQ0FBQzs7OzsiLCJzb3VyY2VSb290IjoiLi4vLi4ifQ==
 
 </script></body>

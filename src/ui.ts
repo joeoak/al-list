@@ -1,10 +1,15 @@
-
-document.getElementById('create')!.onclick = () => {
-  const textbox = document.getElementById('count')! as HTMLInputElement
-  const count = parseInt(textbox.value, 10)
-  parent.postMessage({ pluginMessage: { type: 'create-rectangles', count } }, '*')
+function id<T>(obj: T): Exclude<T, null|undefined>
+{
+  if (obj === undefined || obj === null)
+  {
+    throw new Error("null value")
+  }
+  return obj as any as Exclude<T, null|undefined>
 }
 
-document.getElementById('cancel')!.onclick = () => {
-  parent.postMessage({ pluginMessage: { type: 'cancel' } }, '*')
-}
+id(document.getElementById('convert')).addEventListener('click', () =>
+{
+  const select = id(document.getElementById('list-style-select') as HTMLInputElement);
+  const listStyle = select.value;
+  parent.postMessage({ pluginMessage: { type: 'draw-list', listStyle } }, '*');
+})
