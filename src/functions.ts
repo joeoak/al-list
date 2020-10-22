@@ -3,7 +3,8 @@ const drawList = (selection, listStyle) =>
     let newList = figma.createFrame(); // parent frame
     Object.assign(newList,
     {
-        counterAxisSizingMode: 'AUTO',
+        counterAxisSizingMode: 'FIXED',
+        constraints: selection.constraints,
         fills: [],
         itemSpacing: selection.paragraphSpacing,
         layoutMode: 'VERTICAL',
@@ -11,6 +12,7 @@ const drawList = (selection, listStyle) =>
         x: selection.x,
         y: selection.y,
     })
+    newList.resize(selection.width, selection.height);
 
     const textArr = parseText(selection.characters);
 
@@ -23,6 +25,7 @@ const drawList = (selection, listStyle) =>
         {
             counterAxisSizingMode: 'AUTO',
             fills: [],
+            layoutAlign: 'MIN',
             layoutMode: 'HORIZONTAL',
             name: 'li',
         })
