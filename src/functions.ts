@@ -71,7 +71,7 @@ const drawList = (selection, listStyle) =>
     selection.remove();
 }
 
-const loadFont = async (node) =>
+const loadFont = async node =>
 {
     if (node && node.type === 'TEXT')
     {
@@ -89,7 +89,7 @@ const loadFont = async (node) =>
     }
 }
 
-const parseText = (str) =>
+const parseText = str =>
 {
     const arr = str.split(/\n/g); // split by line break
 

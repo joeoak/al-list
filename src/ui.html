@@ -2,12 +2,24 @@
   <meta charset="utf-8">
 </head>
 <body>
-  <div class="wrapper">
-    <label for="list-style-select">Choose a list style</label>
-    <select name="list-style" id="list-style-select">
-      <option value="bullet">Bulleted</option>
-      <option value="hyphen">Hyphenated</option>
-    </select>
-    <button id="convert">Convert</button>
+  <div id="preview" class="preview">
+    <ul>
+      <li>• Alexis</li>
+      <li>• David</li>
+      <li>• Johnny</li>
+      <li>• Moira</li>
+    </ul>
+  </div>
+  <div class="console">
+    <div class="console-li">
+      <div class="console-li-label">List Style</div>
+      <div class="choice-group">
+        <input type="radio" id="list-style-choice-1" name="list-style-choice" value="bullet" checked>
+        <label for="list-style-choice-1">•</label>
+        <input type="radio" id="list-style-choice-2" name="list-style-choice" value="hyphen">
+        <label for="list-style-choice-2">-</label>
+      </div>
+    </div>
+    <button id="convert" class="console-button">Convert</button>
   </div>
 </body>

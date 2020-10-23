@@ -1,6 +1,7 @@
 import { drawList, loadFont } from './functions';
 
 figma.showUI(__html__);
+figma.ui.resize(240, 234);
 
 let selection = figma.currentPage.selection;
 loadFont(selection[0]);
