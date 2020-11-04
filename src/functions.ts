@@ -1,5 +1,8 @@
 const drawList = (selection, listStyle) =>
 {
+    const textArr = parseText(selection.characters);
+    const selectionHeight = getLineHeight(selection);
+
     let newList = figma.createFrame(); // parent frame
     Object.assign(newList,
     {
@@ -12,14 +15,10 @@ const drawList = (selection, listStyle) =>
         x: selection.x,
         y: selection.y,
     })
-    newList.resize(selection.width, selection.height);
-
-    const textArr = parseText(selection.characters);
+    newList.resize(selection.width + selectionHeight, selection.height);
 
     for (let i = 0; i < textArr.length; i++)
-    {   
-        let selectionHeight = selection.lineHeight.value;
-
+    {
         let newFrame = figma.createFrame(); // child frame
         Object.assign(newFrame,
         {
@@ -59,7 +58,7 @@ const drawList = (selection, listStyle) =>
             textAlignVertical: 'TOP',
             textAutoResize: 'HEIGHT',
         })
-        newText.resize(selection.width - selectionHeight, selectionHeight);
+        newText.resize(selection.width, selectionHeight);
 
         // assemble
         newFrame.appendChild(newBullet);
@@ -69,6 +68,20 @@ const drawList = (selection, listStyle) =>
 
     selection.parent.appendChild(newList);
     selection.remove();
+}
+
+const getLineHeight = node =>
+{
+    let newText = node.clone();
+    Object.assign(newText,
+    {
+        characters: '00',
+        rotation: 0,
+        textAutoResize: 'WIDTH_AND_HEIGHT',
+    })
+    let lineHeight = newText.height;
+    newText.remove();
+    return lineHeight;
 }
 
 const loadFont = async node =>
