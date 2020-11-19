@@ -3,23 +3,23 @@ const drawList = (selection, listStyle) =>
     const textArr = parseText(selection.characters);
     const selectionHeight = getLineHeight(selection);
 
-    let newList = figma.createFrame(); // parent frame
+    // parent frame
+    let newList = figma.createFrame();
     Object.assign(newList,
     {
-        counterAxisSizingMode: 'FIXED',
+        counterAxisSizingMode: 'AUTO',
         constraints: selection.constraints,
         fills: [],
-        itemSpacing: selection.paragraphSpacing,
         layoutMode: 'VERTICAL',
         name: 'ul',
         x: selection.x,
         y: selection.y,
     })
-    newList.resize(selection.width + selectionHeight, selection.height);
 
     for (let i = 0; i < textArr.length; i++)
     {
-        let newFrame = figma.createFrame(); // child frame
+        // child frame
+        let newFrame = figma.createFrame();
         Object.assign(newFrame,
         {
             counterAxisSizingMode: 'AUTO',
@@ -29,14 +29,15 @@ const drawList = (selection, listStyle) =>
             name: 'li',
         })
 
-        let newBullet = selection.clone(); // child bullet
+        // child bullet
+        let newBullet = selection.clone();
         Object.assign(newBullet,
         {
             layoutAlign: 'MIN',
             rotation: 0,
             textAlignHorizontal: 'CENTER',
             textAlignVertical: 'TOP',
-            textAutoResize: 'HEIGHT',
+            textAutoResize: 'NONE',
         })
         if (listStyle === 'bullet')
         {
@@ -48,7 +49,8 @@ const drawList = (selection, listStyle) =>
         }
         newBullet.resize(selectionHeight, selectionHeight);
 
-        let newText = selection.clone(); // child content
+        // child content
+        let newText = selection.clone();
         Object.assign(newText,
         {
             characters: textArr[i],
@@ -58,7 +60,6 @@ const drawList = (selection, listStyle) =>
             textAlignVertical: 'TOP',
             textAutoResize: 'HEIGHT',
         })
-        newText.resize(selection.width, selectionHeight);
 
         // assemble
         newFrame.appendChild(newBullet);
@@ -104,27 +105,13 @@ const loadFont = async node =>
 
 const parseText = str =>
 {
-    const arr = str.split(/\n/g); // split by line break
-
-    // remove any existing • or -
+    const newLineRegex = /^.*/gm;
+    const arr = str.match(newLineRegex); // match new lines
     for (let i = 0; i < arr.length; i++)
     {
-        const firstChar = arr[i].charAt(0);
-
-        if (firstChar === '•' || firstChar === '-')
-        {
-            let isSpace = true;
-            let j = 1;
-
-            while (isSpace === true)
-            {
-                (arr[i][j] === ' ') ? j++ : isSpace = false;
-            }
-
-            arr[i] = arr[i].slice(j, arr[i].length);
-        }
+        const bulletRegex = /^[•-]\s*/g;
+        arr[i] = arr[i].replace(bulletRegex, ''); // replace bullets
     }
-
     return arr;
 }
 
