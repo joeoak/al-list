@@ -8,7 +8,6 @@ const drawList = (selection, listStyle) =>
     Object.assign(newList,
     {
         counterAxisSizingMode: 'AUTO',
-        constraints: selection.constraints,
         fills: [],
         layoutMode: 'VERTICAL',
         name: 'ul',
@@ -31,9 +30,11 @@ const drawList = (selection, listStyle) =>
 
         // child bullet
         let newBullet = selection.clone();
+        newBullet.resize(selectionHeight, selectionHeight);
         Object.assign(newBullet,
         {
             layoutAlign: 'MIN',
+            paragraphIndent: 0,
             rotation: 0,
             textAlignHorizontal: 'CENTER',
             textAlignVertical: 'TOP',
@@ -47,14 +48,15 @@ const drawList = (selection, listStyle) =>
         {
             newBullet.characters = '-';
         }
-        newBullet.resize(selectionHeight, selectionHeight);
 
         // child content
         let newText = selection.clone();
+        newText.resize(selection.width, selectionHeight);
         Object.assign(newText,
         {
             characters: textArr[i],
             layoutAlign: 'MIN',
+            paragraphIndent: 0,
             rotation: 0,
             textAlignHorizontal: 'LEFT',
             textAlignVertical: 'TOP',
@@ -109,7 +111,7 @@ const parseText = str =>
     const arr = str.match(newLineRegex); // match new lines
     for (let i = 0; i < arr.length; i++)
     {
-        const bulletRegex = /^[•-]\s*/g;
+        const bulletRegex = /^[•-]?\s*/g;
         arr[i] = arr[i].replace(bulletRegex, ''); // replace bullets
     }
     return arr;
