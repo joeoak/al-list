@@ -5,12 +5,17 @@ const drawList = (selection, listStyle) =>
 
     // parent frame
     let newList = figma.createFrame();
+    newList.resize(selection.width + selectionHeight, selectionHeight);
     Object.assign(newList,
     {
-        counterAxisSizingMode: 'AUTO',
+        counterAxisAlignItems: 'MIN',
+        counterAxisSizingMode: 'FIXED', // horizontal
+        constraints: selection.constraints,
         fills: [],
         layoutMode: 'VERTICAL',
         name: 'ul',
+        primaryAxisAlignItems: 'MIN',
+        primaryAxisSizingMode: 'AUTO', // vertical
         x: selection.x,
         y: selection.y,
     })
@@ -21,11 +26,14 @@ const drawList = (selection, listStyle) =>
         let newFrame = figma.createFrame();
         Object.assign(newFrame,
         {
-            counterAxisSizingMode: 'AUTO',
+            counterAxisAlignItems: 'MIN',
+            counterAxisSizingMode: 'AUTO', // vertical
             fills: [],
-            layoutAlign: 'MIN',
+            layoutAlign: 'STRETCH',
             layoutMode: 'HORIZONTAL',
             name: 'li',
+            primaryAxisAlignItems: 'MIN',
+            primaryAxisSizingMode: 'FIXED', // horizontal
         })
 
         // child bullet
@@ -33,7 +41,8 @@ const drawList = (selection, listStyle) =>
         newBullet.resize(selectionHeight, selectionHeight);
         Object.assign(newBullet,
         {
-            layoutAlign: 'MIN',
+            layoutAlign: 'INHERIT',
+            layoutGrow: 0,
             paragraphIndent: 0,
             rotation: 0,
             textAlignHorizontal: 'CENTER',
@@ -55,7 +64,8 @@ const drawList = (selection, listStyle) =>
         Object.assign(newText,
         {
             characters: textArr[i],
-            layoutAlign: 'MIN',
+            layoutAlign: 'INHERIT',
+            layoutGrow: 1,
             paragraphIndent: 0,
             rotation: 0,
             textAlignHorizontal: 'LEFT',
